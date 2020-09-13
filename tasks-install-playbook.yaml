@@ -1,0 +1,34 @@
+---
+- hosts: 192.168.15.12
+  remote_user: ubuntu
+
+  tasks:
+  - name: apt update
+    become: true
+    become_user: root
+    apt: 
+      update_cache: yes 
+      name: [python3-dev, libpq-dev, python3-pip]
+      state: present
+  - name: pip install
+    pip:
+      name:
+        - django
+        - psycopg2
+  - name: git cloning
+    git:
+      repo: https://github.com/raulikeda/tasks.git
+      dest: /home/ubuntu/tasks
+  - name: migration
+    command: python3 manage.py migrate
+    args:
+      chdir: /home/ubuntu/tasks
+  - name: crontab
+    cron:
+      name: "start django"
+      special_time: reboot
+      job: cd /home/ubuntu/tasks && ./run.sh
+  - name: reboot machine
+    become: true
+    become_user: root
+    reboot:
