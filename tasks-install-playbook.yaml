@@ -1,5 +1,13 @@
 ---
-- hosts: server
+- hosts: localhost
+  connection: local
+  tasks:
+  - add_host:
+      name: "{{ server }}"
+      groups: working_group
+    changed_when: false
+
+- hosts: working_group
   remote_user: ubuntu
 
   tasks:
