@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'tasks',
         'USER': 'cloud',
-        'PASSWORD': 'cloudz',
+        'PASSWORD': 'cloud',
         'HOST': 'node1',
         'PORT': '5432',
     }

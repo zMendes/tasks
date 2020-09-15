@@ -6,6 +6,10 @@
       name: "{{ server }}"
       groups: working_group
     changed_when: false
+  - add_host:
+      name: "{{ nginx }}"
+      groups: reverse_proxy
+    changed_when: false
 
 - hosts: working_group
   remote_user: ubuntu
@@ -40,3 +44,20 @@
     become: true
     become_user: root
     reboot:
+
+- hosts: reverse_proxy
+  become: yes
+  tasks:
+  - name: Installs nginx web server
+    apt:
+      name: nginx
+      state: present
+      update_cache: true
+    notify:
+    - start nginx
+
+  handlers:
+  - name: start nginx
+    service:
+      name: nginx
+      state: present
