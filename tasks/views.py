@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import Task
 from .forms import TaskForm
@@ -33,12 +34,15 @@ def getTasks(request):
     serializer = TaskSerializer(tasks, many =True)
     return JsonResponse(serializer.data, safe =False)
 
+@csrf_exempt
 def insertTask(request):
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/')
+            return JsonResponse(form.data,status =201)
+        else:
+            return HttpResponse("ughhhhh")
     else:
         return HttpResponse("uwuwuuwuwuw")
 
