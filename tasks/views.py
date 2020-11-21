@@ -42,7 +42,7 @@ def insertTask(request):
             form.save()
             return JsonResponse(form.data,status =201)
         else:
-            return HttpResponse("ughhhhh")
+            return JsonResponse({}, status=400)
     else:
-        return HttpResponse("uwuwuuwuwuw")
+        return HttpResponse("There are no requests here")
 
